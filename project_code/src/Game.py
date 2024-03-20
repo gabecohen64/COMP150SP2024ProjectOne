@@ -16,7 +16,7 @@ class Game:
         self.current_event = None
         self._initialize_game()
         self.continue_playing = True
-
+a
     def add_character(self, character: Character):
         """Add a character to the game."""
         self.characters.append(character)
