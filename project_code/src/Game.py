@@ -1,3 +1,8 @@
+# game ideas: racing theme, characters are drivers, pit crew members, engineers, and boss. these characters can receive upgrades. upgraded drivers are faster and more consistent meaning less incidents 
+# like spinning out or crashing. upgraded pit crews add more pit crew members per upgrade, meaning faster pit stops. upgraded engineers mean a faster car with upgraded aerodynamics and engine. an upgraded
+# boss adds more consistency to pit stops and car upgrades. a lower level boss increases the chances of inconsistent pit stop times regardless of the number of members, and it can mean car upgrades may backfire
+# and make the car slower than before. events could be the race start, pit stops, and battles on sections of track such as straights, high speed, medium speed, and low speed corners. 
+
 from typing import List
 
 from project_code.src.Character import Character
@@ -16,7 +21,7 @@ class Game:
         self.current_event = None
         self._initialize_game()
         self.continue_playing = True
-a
+
     def add_character(self, character: Character):
         """Add a character to the game."""
         self.characters.append(character)
