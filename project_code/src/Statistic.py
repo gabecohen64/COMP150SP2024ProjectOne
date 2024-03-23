@@ -1,13 +1,10 @@
 import random
-
-
 class Statistic:
     def __init__(self, legacy_points: int):
         self.value = self._generate_starting_value(legacy_points)
         self.description = None
         self.min_value = 0
         self.max_value = 100
-
     def __str__(self):
         return f"{self.value}"
 
@@ -20,7 +17,6 @@ class Statistic:
         self.value -= amount
         if self.value < self.min_value:
             self.value = self.min_value
-
     def _generate_starting_value(self, legacy_points: int):
         """Generate a starting value for the statistic based on random number and user properties."""
         """This is just a placeholder for now. Perhaps some statistics will be based on user properties, and others 

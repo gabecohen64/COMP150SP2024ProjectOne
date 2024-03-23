@@ -1,6 +1,4 @@
 from project_code.src.Statistic import *
-
-
 class Character:
 
     def __init__(self, name: str = None):

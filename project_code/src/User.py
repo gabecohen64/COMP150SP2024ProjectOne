@@ -1,6 +1,5 @@
 # User.py
 from project_code.src.Game import Game
-
 class User:
 
     def __init__(self, username: str, password: str, legacy_points: int = 0):

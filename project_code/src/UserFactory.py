@@ -1,10 +1,7 @@
 # UserFactory.py
 from project_code.src.UserInputParser import UserInputParser
 from project_code.src.User import User
-
-
 class UserFactory:
-
     @staticmethod
     def create_user(parser: UserInputParser) -> User:
         username = parser.parse("Enter a username: ")
