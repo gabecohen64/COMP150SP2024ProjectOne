@@ -1,8 +1,10 @@
 import random
+from tracemalloc import Statistic
+
 
 # Statistics: pit stop time, lap number, position number, car number, upgrade number, chance of bad pit stop, chance of bad upgrade, chance of crash, chance of pitting under safety car, chance of track event.
 
-class 'Pit Stop Time':
+class Pit_Stop_Time:
     def __init__(self, seconds: float):
         self.value = self._generate_starting_value(seconds)
         self.description = None
@@ -35,10 +37,6 @@ if average_pit_stop_time is not None:
     print(f"Average pit stop time with {num_crew_members} crew members: {average_pit_stop_time} seconds")
 else:
     print("Invalid number of crew members.")
-
-
-
-
     def __str__(self):
         return f"{self.value}"
 

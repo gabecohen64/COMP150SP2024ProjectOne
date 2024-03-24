@@ -1,5 +1,8 @@
 # main.py
 import sys
+
+from project_code.src.Character import Character
+from project_code.src.Location import Location
 from project_code.src.UserInputParser import UserInputParser
 from project_code.src.InstanceCreator import InstanceCreator
 from project_code.src.UserFactory import UserFactory
@@ -35,9 +38,6 @@ def _main_game_loop(self):
         self.current_location = self.location[0]
         self.current_event = self.current_location.getEvent() 
 
-
 def _initialize_game(self):
     character_list = [Character() for _ in range(10)]
     location_list = [Location() for _ in range(2)]
-
-    for character in 
