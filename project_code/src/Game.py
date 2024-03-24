@@ -24,46 +24,6 @@ class Game:
         self.continue_playing = True
 
 # Initalizes all upgrades and set race number to 1 before championship starts
-class Character:
-    def __init__(self, level=1):
-        self.level = level
-
-class Driver(Character):
-    pass
-
-class Pit_crew(Character):
-    pass
-
-class Engineers(Character):
-    pass
-
-class Race:
-    def __init__(self):
-        self.number = 1
-
-def initialize_levels():
-    driver = Driver()
-    pit_crew = Pit_crew()
-    engineers = Engineers()
-    return driver, pit_crew, engineer
-
-# Randomizing the order of races in the championship as well as defining the number of events per race
-class Race:
-    RACE_NAMES = [
-        "British Grand Prix",
-        "Monaco Grand Prix",
-        "Brazilian Grand Prix",
-        "Belgian Grand Prix",
-        "Japanese Grand Prix"
-    ]
-
-    def __init__(self, number):
-        self.number = number
-        self.events_per_race = 10
-        self.name = random.choice(self.RACE_NAMES)
-        self.RACE_NAMES.remove(self.name)
-
-#Driver class
 class Driver:
     def __init__(self):
         self.level = 1
@@ -72,7 +32,6 @@ class Driver:
         if self.level < 4:
             self.level += 1
 
-# Car class
 class Player_car:
     def __init__(self):
         self.level = 1
@@ -81,213 +40,205 @@ class Player_car:
         if self.level < 4:
             self.level += 1
 
-# Opponent car class
 class Opponent_car:
     def __init__(self):
+        self.level = 1
+
+    def randomize_level(self):
         self.level = random.randint(1, 4)
 
-# Race
+class Pit_crew:
+    def __init__(self, level):
+        self.level = level
+
+    def upgrade(self):
+        if self.level < 4:
+            self.level += 1
+
+    def pit_stop_time(self):
+        # Define pit stop time based on pit crew level
+        if self.level == 1:
+            return round(random.uniform(10, 15), 1)
+        elif self.level == 2:
+            return round(random.uniform(6, 10), 1)
+        elif self.level == 3:
+            return round(random.uniform(4, 8), 1)
+        elif self.level == 4:
+            return round(random.uniform(2, 3.5), 1)
+
 class Race:
+# Events that take place during the race
     def __init__(self):
-# Events
-    self.events = ['Race start', 'Straight battle', 'High-speed corner battle', 'Medium-speed corner battle',
-                    'Low-speed corner battle', 'Crash', 'Pit stop', 'Race finish']
+        self.events = ['Straight battle', 'High speed corner battle', 'Medium speed corner battle',
+                       'Low speed corner battle', 'Pit stop']
+
+# Names of the races
+    def get_race_name(self):
+        race_names = ["British Grand Prix", "Italian Grand Prix", "Monaco Grand Prix", "Brazilian Grand Prix", "Belgian Grand Prix"]
+        return random.choice(race_names)
+
 # Race start
     def race_start(self):
         if random.random() < 0.9:  
             print("Race start successful!")
             return True
         else:
-            print("DNF. You crashed with another driver and are out of this race")
+            print("DNF. You crashed with another driver and are out of this race.")
             return False
 
 # Straight battle
-    def straight_battle(self, player_driver, player_car, opponent_car):
+    def straight_battle(self, player_driver, player_car, opponent_driver, opponent_car):
+        if random.random() < 0.025:
+            print("DNF. You crashed trying a straight line overtake.")
+            return "DNF"
+
+        opponent_driver.randomize_level()
+        opponent_car.randomize_level()
+
         if player_driver.level >= 3 and player_car.level == opponent_car.level:
             print("Straight line overtake successful!")
-            return player_car
+            return "Player's car"
         elif player_car.level > opponent_car.level:
-            print("Straight line overtake failed.")
-            return player_car
+            print("Straight line overtake successful!")
+            return "Player's car"
         elif player_car.level == opponent_car.level:
             print("Straight line overtake failed.")
-            return opponent_car
+            return "Opponent's car"
         else:
-            print("Overtake failed.")
-            return opponent_car
+            print("Straight line overtake failed.")
+            return "Opponent's car"
 
 # Low speed corner battle
     def low_speed_corner_battle(self, player_driver, opponent_driver):
+        if random.random() < 0.05:
+            print("DNF. You crashed trying a low speed corner overtake.")
+            return "DNF"
+
+        opponent_driver.randomize_level()
+
         if player_driver.level > opponent_driver.level:
-            print("Low-speed corner overtake successful!")
+            print("Low speed corner overtake successful!")
             return "Player's car"
         elif player_driver.level == opponent_driver.level:
-            print("Low-speed corner overtake failed.")
-            return None
+            print("Low speed corner overtake failed.")
+            return "Opponent's car"
         else:
-            print("Low-speed corner overtake failed")
+            print("Low speed corner overtake failed.")
             return "Opponent's car"
 
+# Medium speed corner battle
+    def medium_speed_corner_battle(self, player_driver, player_car, opponent_driver, opponent_car):
+        if random.random() < 0.1:
+            print("DNF. You crashed trying a medium speed corner overtake.")
+            return "DNF"
 
+        opponent_driver.randomize_level()
+        opponent_car.randomize_level()
 
+        player_strength = (player_driver.level + player_car.level) / 2
+        opponent_strength = (opponent_driver.level + opponent_car.level) / 2
+        if player_strength > opponent_strength:
+            print("Medium speed corner overtake successful!")
+            return "Player's car"
+        elif player_strength == opponent_strength:
+            print("Medium speed corner overtake failed.")
+            return "Opponent's car"
+        else:
+            print("Medium speed corner overtake failed.")
+            return "Opponent's car"
 
+# High speed corner battle
+    def high_speed_corner_battle(self, player_driver, player_car, opponent_driver, opponent_car):
+        if random.random() < 0.15: 
+            print("DNF. You crashed trying a high speed corner overtake.")
+            return "DNF"
+        opponent_driver.randomize_level()
+        opponent_car.randomize_level()
 
+        player_strength = (player_driver.level * 0.25) + (player_car.level * 0.75)
+        opponent_strength = (opponent_driver.level * 0.25) + (opponent_car.level * 0.75)
+        if player_strength > opponent_strength:
+            print("High speed corner overtake successful!")
+            return "Player's car"
+        elif player_strength == opponent_strength:
+            print("High speed corner overtake failed.")
+            return "Opponent's car"
+        else:
+            print("High speed corner overtake failed.")
+            return "Opponent's car"
 
+# Pit stop
+    def pit_stop(self, player_pit_crew):
+        pit_time = player_pit_crew.pit_stop_time()
+        print(f"Player's pit stop time: {pit_time} seconds")
 
+        return pit_time
+        print (pit_time)
+# Run race
+def run_race(self, player_driver, player_car, player_pit_crew):
+        # Opponent setup
+        opponent_driver = Driver()
+        opponent_car = OpponentCar()
 
+        if not self.race_start():
+            return
 
+        race_name = self.get_race_name()
+        print(f"\nRace: {race_name}")
 
-    def run_race(self):
         print("Race started!")
-        if random.choices([True, False], weights=[9, 1])[0]:  # Weighted choice for successful race start
-            print("Race start successful!")
-            for event in range(10):  # 10 events after the successful start
-                print(f"Event {event+1}: {random.choice(self.events)}")
-            print("Race finish!")  # Race finish after 10 random events
-        else:
-            print("DNF. You crashed.")
-            print("Race finish! Position is last place.\n")  # If the race starts with a crash, it finishes immediately
+        print(f"Player's driver level: {player_driver.level}, Player's car level: {player_car.level}")
 
+        events = [self.straight_battle, self.low_speed_corner_battle, self.medium_speed_corner_battle,
+                  self.high_speed_corner_battle, self.pit_stop] * 2  # Repeat each event twice
 
+        random.shuffle(events)  # Shuffle event order
 
+        for event in events:
+            if event == self.pit_stop:
+                pit_time = event(player_pit_crew)
+            else:
+                event_outcome = event(player_driver, player_car, opponent_driver, opponent_car)
 
+                if event_outcome == "Crash":
+                    break
 
-
-
-
-        print(f"Event 1: {self.events[0]}")  # Race start
-        for event in range(1, 11):  # Starting from 1 to skip race start
-            print(f"Event {event+1}: {random.choice(self.events[1:-1])}")  # Excluding race start and finish
-        print(f"Event 12: {self.events[-1]}")  # Race finish
-        print("Race finished!\n")
-
-# Race start
-        
-
-
-
-
-
-
-
-
-class Championship:
-race_names = ["British Grand Prix", "Italian Grand Prix", "Monaco Grand Prix", "Brazilian Grand Prix", "Belgian Grand Prix"]
-    def __init__(self, race_names, num_events_per_race=10, max_events=50):
-        self.race_names = race_names
-        self.num_events_per_race = num_events_per_race
-        self.max_events = max_events
-        self.current_race_number = 0
-        self.current_event_number = 0
-
-    def start_race(self):
-        while self.current_race_number < len(self.race_names):
-            self.current_race_number += 1
-            print(f"Starting Race: {self.current_race_number} - {self.race_names[self.current_race_number - 1]}")
-            while self.current_event_number < self.max_events:
-                self.current_event_number += 1
-                print(f"Event {self.current_event_number} in progress for {self.race_names[self.current_race_number - 1]}...")
-                if self.current_event_number % self.num_events_per_race == 0:
-                    self.end_race()
-        print("All races completed!")
-
-# Menu to upgrade after race
-def upgrade_menu(self):
+        print("Race finish!")
+def upgrade_menu(self, player_driver, player_car, player_pit_crew):
         print("\nUpgrade Menu:")
-        print("1. Upgrade Driver Level")
-        print("2. Upgrade Car Level")
-        print("3. Upgrade Engineer Level")
-        print("4. Upgrade Pit Crew Level")
-        print("5. Continue to Next Race")
-        choice = input("Enter your choice: ")
+        print("1. Upgrade Driver")
+        print("2. Upgrade Car")
+        print("3. Upgrade Pit Crew")
+        print("4. Continue to next race")
+
+        choice = input("Enter your choice (1-4): ")
         if choice == "1":
-            self.upgrade_driver()
+            player_driver.upgrade()
+            print("Driver upgraded!")
         elif choice == "2":
-            self.upgrade_car()
+            player_car.upgrade()
+            print("Car upgraded!")
         elif choice == "3":
-            self.upgrade_engineer()
+            player_pit_crew.upgrade()
+            print("Pit Crew upgraded!")
         elif choice == "4":
-            self.upgrade_pit_crew()
-        elif choice == "5":
-            pass  # Continue to the next race
+            print("Continuing to next race...")
         else:
-            print("Invalid choice. Please choose again.")
-            self.upgrade_menu()
+            print("Invalid choice!")
 
-    def upgrade_driver(self):
-        self.driver_level += 1
-        print(f"Driver Level Upgraded to Level {self.driver_level}!")
+if __name__ == "__main__":
+    game = RacingGame()
+    num_races = 5  # Championship consists of 5 races
+    player_driver = Driver()  # Player's driver starts at level 1
+    player_car = Car()  # Player's car starts at level 1
+    player_pit_crew = PitCrew(1)  # Player's pit crew starts at level 1
 
-    def upgrade_car(self):
-        self.car_level += 1
-        print(f"Car Level Upgraded to Level {self.car_level}!")
-
-    def upgrade_engineer(self):
-        self.engineer_level += 1
-        print(f"Engineer Level Upgraded to Level {self.engineer_level}!")
-
-    def upgrade_pit_crew(self):
-        self.pit_crew_level += 1
-        print(f"Pit Crew Level Upgraded to Level {self.pit_crew_level}!")
-
-
-# Randomizer for events during a race
-def trigger_random_event(self):
-        events = ["Straight battle", "High-speed corner battle", "Medium-speed corner battle", "Low-speed corner battle", "Crash", "Pitstop"]
-        event = random.choice(events)
-        print(f"- {event}!")
-
-
-
-
-
-
-
-
-
-
-
-
-# Add a pit crew member
-def add_pit_crew_members(num_additional_crew_members):
-        self.pit_crew_members.append(pit_crew_member)
-    
-    def calculate_pit_stop_time(num_pit_crew_members):
-    # Lookup table for average pit stop times in seconds to the tenth value
-    pit_stop_times = {
-        2: 45,
-        3: 30,
-        6: 20,
-        10: 7.5,
-        14: 3.5,
-        16: 2.5,
-        20: 1.8,
-    }
-    
-
-
-
-# Add an engineer
-def add_engineer(num_additional_engineers):
-        self.engineers.append(engineer)
-
-
-
-    
-    
-    def add_location(self, location: Location):
-        """Add a location to the game."""
-        self.locations.append(location)
-
-    def add_event(self, event: Event):
-        """Add an event to the game."""
-        self.events.append(event)
-
-    
-
-    def start_game(self):
-        return self._main_game_loop()
-
+    for race in range(num_races):
+        print(f"\nRace {race+1}")
+        pit_time = game.run_race(player_driver, player_car, player_pit_crew)
+        game.upgrade_menu(player_driver, player_car, player_pit_crew)
+      
+# Idk what this is
     def _main_game_loop(self):
         """The main game loop."""
         while self.continue_playing:
