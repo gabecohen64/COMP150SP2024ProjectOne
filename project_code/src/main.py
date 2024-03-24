@@ -29,3 +29,15 @@ def start_game():
 
 if __name__ == '__main__':
     start_game()
+
+def _main_game_loop(self):
+    while self.continue_playing:
+        self.current_location = self.location[0]
+        self.current_event = self.current_location.getEvent() 
+
+
+def _initialize_game(self):
+    character_list = [Character() for _ in range(10)]
+    location_list = [Location() for _ in range(2)]
+
+    for character in 
