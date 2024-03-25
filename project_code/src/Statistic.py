@@ -1,66 +1,57 @@
-import random
-from tracemalloc import Statistic
+class Race:
+    def __init__(self):
+        self.events = ['Straight battle', 'High speed corner battle', 'Medium speed corner battle',
+                       'Low speed corner battle', 'Pit stop']
 
+    def get_race_name(self):
+        race_names = ["British Grand Prix", "Italian Grand Prix", "Monaco Grand Prix", "Brazilian Grand Prix", "Belgian Grand Prix"]
+        return random.choice(race_names)
 
-# Statistics: pit stop time, lap number, position number, car number, upgrade number, chance of bad pit stop, chance of bad upgrade, chance of crash, chance of pitting under safety car, chance of track event.
+    def race_start(self):
+        if random.random() < 0.9:  
+            print("Race start successful!")
+            return True
+        else:
+            print("DNF. You crashed with another driver and are out of this race.")
+            return False
 
-class Pit_Stop_Time:
-    def __init__(self, seconds: float):
-        self.value = self._generate_starting_value(seconds)
-        self.description = None
-        self.min_value = 0
-        self.max_value = 100
+    def straight_battle(self, game, player_driver, player_car, player_pit_crew):
+        if random.random() < 0.025:
+            print("DNF. You crashed trying a straight line overtake.")
+            return "DNF"
 
-def calculate_pit_stop_time(num_pit_crew_members):
-    # Lookup table for average pit stop times in seconds to the tenth value
-    pit_stop_times = {
-        2: 45,
-        3: 30,
-        6: 20,
-        10: 7.5,
-        14: 3.5,
-        16: 2.5,
-        20: 1.8,
-    }
-    
-    # Check if the provided number of crew members is within the valid range
-    if num_crew_members < 3 or num_crew_members > 22:
-        return None  # Return None for invalid input
-    
-    # Retrieve and return the average pit stop time from the lookup table
-    return pit_stop_times[num_crew_members]
+        opponent_driver = Driver()
+        opponent_car = OpponentCar()
+        opponent_driver.randomize_level()
+        opponent_car.randomize_level()
 
-# Example usage:
-num_crew_members = 10
-average_pit_stop_time = calculate_pit_stop_time(num_crew_members)
-if average_pit_stop_time is not None:
-    print(f"Average pit stop time with {num_crew_members} crew members: {average_pit_stop_time} seconds")
-else:
-    print("Invalid number of crew members.")
-    def __str__(self):
-        return f"{self.value}"
+        if player_driver.level >= 3 and player_car.level == opponent_car.level:
+            print("Straight line overtake successful!")
+            return "Player's car"
+        elif player_car.level > opponent_car.level:
+            print("Straight line overtake successful!")
+            return "Player's car"
+        elif player_car.level == opponent_car.level:
+            print("Straight line overtake failed.")
+            return "Opponent's car"
+        else:
+            print("Straight line overtake failed.")
+            return "Opponent's car"
 
-    def increase(self, amount):
-        self.value += amount
-        if self.value > self.max_value:
-            self.value = self.max_value
+    def low_speed_corner_battle(self, game, player_driver, player_car, player_pit_crew):
+        if random.random() < 0.05:
+            print("DNF. You crashed trying a low speed corner overtake.")
+            return "DNF"
 
-    def decrease(self, amount):
-        self.value -= amount
-        if self.value < self.min_value:
-            self.value = self.min_value
+        opponent_driver = Driver()
+        opponent_driver.randomize_level()
 
-    def _generate_starting_value(self, legacy_points: int):
-        """Generate a starting value for the statistic based on random number and user properties."""
-        """This is just a placeholder for now. Perhaps some statistics will be based on user properties, and others 
-        will be random."""
-        return legacy_points % 100 + random.randint(1, 3)
-
-
-class Strength(Statistic):
-
-    def __init__(self, value):
-        super().__init__(value)
-        self.description = "Strength is a measure of physical power."
-
-# and so on for the other statistics
+        if player_driver.level > opponent_driver.level:
+            print("Low speed corner overtake successful!")
+            return "Player's car"
+        elif player_driver.level == opponent_driver.level:
+            print("Low speed corner overtake failed.")
+            return "Opponent's car"
+        else:
+            print("Low speed corner overtake failed.")
+            return "Opponent's car"
