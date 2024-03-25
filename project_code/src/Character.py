@@ -1,6 +1,5 @@
 from project_code.src.Statistic import *
 class Character:
-
     def __init__(self, name: str = None):
         """
         Core Stats: Everyone has these
@@ -19,6 +18,5 @@ class Character:
         self.strength: Strength = Strength(self)
         # etc
         # self.intelligence: Intelligence = Intelligence(self)
-
     def _generate_name(self):
         return "Bob"
