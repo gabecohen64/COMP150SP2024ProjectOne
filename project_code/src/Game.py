@@ -173,7 +173,6 @@ class Race:
         print(f"Player's pit stop time: {pit_time} seconds")
 
         return pit_time
-        print (pit_time)
 # Run race
 def run_race(self, player_driver, player_car, player_pit_crew):
         # Opponent setup
