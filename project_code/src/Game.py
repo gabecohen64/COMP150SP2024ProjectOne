@@ -194,7 +194,8 @@ def run_race(self, player_driver, player_car, player_pit_crew):
         random.shuffle(events)  # Shuffle event order
 
         for event in events:
-            
+            if event == self.pit_stop:
+                pass 
             else:
                 event_outcome = event(player_driver, player_car, opponent_driver, opponent_car)
 
@@ -233,7 +234,6 @@ if __name__ == "__main__":
 
     for race in range(num_races):
         print(f"\nRace {race+1}")
-        pit_time = game.run_race(player_driver, player_car, player_pit_crew)
         game.upgrade_menu(player_driver, player_car, player_pit_crew)
       
 # Idk what this is
