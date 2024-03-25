@@ -194,8 +194,7 @@ def run_race(self, player_driver, player_car, player_pit_crew):
         random.shuffle(events)  # Shuffle event order
 
         for event in events:
-            if event == self.pit_stop:
-                pit_time = event(player_pit_crew)
+            
             else:
                 event_outcome = event(player_driver, player_car, opponent_driver, opponent_car)
 
