@@ -1,11 +1,10 @@
 # InstanceCreator.py
+
 from project_code.src.User import User
 from project_code.src.UserFactory import UserFactory
 from project_code.src.UserInputParser import UserInputParser
 
-
 class InstanceCreator:
-
     def __init__(self, user_factory: UserFactory, parser: UserInputParser):
         self.user_factory = user_factory
         self.parser = parser
@@ -24,4 +23,5 @@ class InstanceCreator:
             return None
 
     def _load_user(self) -> User:
-        pass
+        username = self.parser.parse("Enter your username:")
+        return self.user_factory.get_user_by_username(username)

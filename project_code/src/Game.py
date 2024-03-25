@@ -10,8 +10,6 @@ from project_code.src.Character import Character
 from project_code.src.Event import Event
 from project_code.src.Location import Location
 
-
-
 class Race:
     def __init__(self):
         self.events = ['Straight battle', 'High speed corner battle', 'Medium speed corner battle',
@@ -69,3 +67,7 @@ class Race:
         else:
             print("Low speed corner overtake failed.")
             return "Opponent's car"
+
+
+class Game:
+    pass
