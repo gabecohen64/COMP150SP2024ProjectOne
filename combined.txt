@@ -1,0 +1,699 @@
+## Directory Structure:
+
+./
+    __init__.py
+    COMP150SP2024ProjectOne/
+
+    project_code/
+        __init__.py
+        test/
+            __init__.py
+            test_InstanceCreator.py
+            __pycache__/
+
+        __pycache__/
+
+        src/
+            Character.py
+            Event.py
+            Game.py
+            InstanceCreator.py
+            Location.py
+            Statistic.py
+            User.py
+            UserFactory.py
+            UserInputParser.py
+            __init__.py
+            main.py
+            newcode.py
+            __pycache__/
+
+    .git/
+
+        objects/
+
+            pack/
+
+            info/
+
+        info/
+
+        logs/
+
+            refs/
+
+                heads/
+
+                remotes/
+
+                    origin/
+
+        hooks/
+
+        refs/
+
+            heads/
+
+            tags/
+
+            remotes/
+
+                origin/
+
+    .idea/
+
+        copilot/
+
+            chatSessions/
+
+                blobs/
+
+
+## Combined Python Files:
+
+## ./__init__.py
+
+
+
+## ./project_code/__init__.py
+
+
+
+## ./project_code/test/test_InstanceCreator.py
+import unittest
+from unittest.mock import MagicMock
+from project_code.src.InstanceCreator import InstanceCreator
+from project_code.src.UserFactory import UserFactory
+from project_code.src.UserInputParser import UserInputParser
+from project_code.src.User import User
+
+class TestInstanceCreator(unittest.TestCase):
+    def setUp(self):
+        self.mock_user_factory = MagicMock(spec=UserFactory)
+        self.mock_parser = MagicMock(spec=UserInputParser)
+        self.instance_creator = InstanceCreator(self.mock_user_factory, self.mock_parser)
+
+    def test_get_user_info_yes_creates_new_user(self):
+        # Prepare the mock objects
+        self.mock_parser.parse.return_value = "new"  # Simulate the response for creating a new user
+        mock_user = MagicMock(spec=User)
+        self.mock_user_factory.create_user.return_value = mock_user
+
+        # Execute the method under test
+        user = self.instance_creator.get_user_info("yes")
+
+        # Verify the results
+        self.mock_parser.parse.assert_called_once_with("Create a new username or login to an existing account?")
+        self.mock_user_factory.create_user.assert_called_once_with(self.mock_parser)
+        self.assertEqual(user, mock_user, "The method should return a new user object")
+
+    def test_get_user_info_no_returns_none(self):
+        # Execute the method under test with a response that should not create a user
+        user = self.instance_creator.get_user_info("no")
+
+        # Verify the results
+        self.assertIsNone(user, "The method should return None for a 'no' response")
+
+    # You can add more tests to cover other scenarios, such as handling login
+
+if __name__ == '__main__':
+    unittest.main()
+
+
+
+## ./project_code/test/__init__.py
+
+
+
+## ./project_code/src/User.py
+# User.py
+from project_code.src.Game import Game
+
+class User:
+
+    def __init__(self, username: str, password: str, legacy_points: int = 0):
+        self.username = username
+        self.password = password
+        self.legacy_points = legacy_points
+        self.current_game = self._get_retrieve_saved_game_state_or_create_new_game()
+
+    def _get_retrieve_saved_game_state_or_create_new_game(self) -> Game:
+        new_game = Game()
+        return new_game
+
+    def save_game(self):
+        pass
+
+
+
+## ./project_code/src/Event.py
+class Event:
+    pass
+
+
+
+## ./project_code/src/UserFactory.py
+# UserFactory.py
+from project_code.src.UserInputParser import UserInputParser
+from project_code.src.User import User
+
+
+class UserFactory:
+
+    @staticmethod
+    def create_user(parser: UserInputParser) -> User:
+        username = parser.parse("Enter a username: ")
+        password = parser.parse("Enter a password: ")
+        # Here you can add more logic as needed, e.g., validate input
+        return User(username, password)
+
+
+
+## ./project_code/src/Game.py
+'''game ideas: racing theme, characters are drivers, pit crew members, engineers, and team boss. these characters can receive upgrades. upgraded drivers are faster and more consistent meaning less incidents 
+ like spinning out or crashing. upgraded pit crews add more pit crew members per upgrade, meaning faster pit stops. upgraded engineers mean a faster car with upgraded aerodynamics and engine. an upgraded
+boss adds more consistency to pit stops and car upgrades. a lower level boss increases the chances of inconsistent pit stop times regardless of the number of members, and it can mean car upgrades may backfire
+and make the car slower than before. events could be the race start, pit stops, and battles on sections of track such as straights, high speed, medium speed, and low speed corners. include safety car as cutscene.
+safety car is most common pit stop time.'''
+import random
+from typing import List
+
+from project_code.src.Character import Character
+from project_code.src.Event import Event
+from project_code.src.Location import Location
+
+
+class Engineers(Character):
+    pass
+
+
+class Game:
+    def __init__(self):
+        self.characters: List[Character] = [Driver(1), Pit_crew(1), Engineers()]
+        self.locations: List[Location] = [Location("British Grand Prix"), Location("Italian Grand Prix")]
+        self.events: List[Event] = ["Race Start", "Straight battle", "High-speed corner battle",
+                                    "Medium-speed corner battle",
+                                    "Low-speed corner battle", "Pit stop", "Safety car", "Crash", "Race finish"]
+        self.party: List[Character] = ["Team Owner"]
+        self.current_location = None
+        self.current_event = None
+        self._initialize_game()
+        self.continue_playing = True
+
+    def upgrade_menu(self, player_driver, player_car, player_pit_crew):
+        pass
+
+
+# Initalizes all upgrades and set race number to 1 before championship starts
+class Driver:
+    def __init__(self, level):
+        self.level = level
+
+    def upgrade(self):
+        if self.level < 4:
+            self.level += 1
+
+
+class Player_car:
+    def __init__(self):
+        self.level = 1
+
+    def upgrade(self):
+        if self.level < 4:
+            self.level += 1
+
+
+class Opponent_car:
+    def __init__(self):
+        self.level = 1
+
+    def randomize_level(self):
+        self.level = random.randint(1, 4)
+
+
+class Pit_crew:
+    def __init__(self, level):
+        self.level = level
+
+    def upgrade(self):
+        if self.level < 4:
+            self.level += 1
+
+    def pit_stop_time(self):
+        # Define pit stop time based on pit crew level
+        if self.level == 1:
+            return round(random.uniform(10, 15), 1)
+        elif self.level == 2:
+            return round(random.uniform(6, 10), 1)
+        elif self.level == 3:
+            return round(random.uniform(4, 8), 1)
+        elif self.level == 4:
+            return round(random.uniform(2, 3.5), 1)
+
+
+class Race:
+    # Events that take place during the race
+    def __init__(self):
+        self.events = ['Straight battle', 'High speed corner battle', 'Medium speed corner battle',
+                       'Low speed corner battle', 'Pit stop']
+
+    # Names of the races
+    def get_race_name(self):
+        race_names = ["British Grand Prix", "Italian Grand Prix", "Monaco Grand Prix", "Brazilian Grand Prix",
+                      "Belgian Grand Prix"]
+        return random.choice(race_names)
+
+    # Race start
+    def race_start(self):
+        if random.random() < 0.9:
+            print("Race start successful!")
+            return True
+        else:
+            print("DNF. You crashed with another driver and are out of this race.")
+            return False
+
+    # Straight battle
+    def straight_battle(self, player_driver, player_car, opponent_driver, opponent_car):
+        if random.random() < 0.025:
+            print("DNF. You crashed trying a straight line overtake.")
+            return "DNF"
+
+        opponent_driver.randomize_level()
+        opponent_car.randomize_level()
+
+        if player_driver.level >= 3 and player_car.level == opponent_car.level:
+            print("Straight line overtake successful!")
+            return "Player's car"
+        elif player_car.level > opponent_car.level:
+            print("Straight line overtake successful!")
+            return "Player's car"
+        elif player_car.level == opponent_car.level:
+            print("Straight line overtake failed.")
+            return "Opponent's car"
+        else:
+            print("Straight line overtake failed.")
+            return "Opponent's car"
+
+    # Low speed corner battle
+    def low_speed_corner_battle(self, player_driver, opponent_driver):
+        if random.random() < 0.05:
+            print("DNF. You crashed trying a low speed corner overtake.")
+            return "DNF"
+
+        opponent_driver.randomize_level()
+
+        if player_driver.level > opponent_driver.level:
+            print("Low speed corner overtake successful!")
+            return "Player's car"
+        elif player_driver.level == opponent_driver.level:
+            print("Low speed corner overtake failed.")
+            return "Opponent's car"
+        else:
+            print("Low speed corner overtake failed.")
+            return "Opponent's car"
+
+    # Medium speed corner battle
+    def medium_speed_corner_battle(self, player_driver, player_car, opponent_driver, opponent_car):
+        if random.random() < 0.1:
+            print("DNF. You crashed trying a medium speed corner overtake.")
+            return "DNF"
+
+        opponent_driver.randomize_level()
+        opponent_car.randomize_level()
+
+        player_strength = (player_driver.level + player_car.level) / 2
+        opponent_strength = (opponent_driver.level + opponent_car.level) / 2
+        if player_strength > opponent_strength:
+            print("Medium speed corner overtake successful!")
+            return "Player's car"
+        elif player_strength == opponent_strength:
+            print("Medium speed corner overtake failed.")
+            return "Opponent's car"
+        else:
+            print("Medium speed corner overtake failed.")
+            return "Opponent's car"
+
+    # High speed corner battle
+    def high_speed_corner_battle(self, player_driver, player_car, opponent_driver, opponent_car):
+        if random.random() < 0.15:
+            print("DNF. You crashed trying a high speed corner overtake.")
+            return "DNF"
+        opponent_driver.randomize_level()
+        opponent_car.randomize_level()
+
+        player_strength = (player_driver.level * 0.25) + (player_car.level * 0.75)
+        opponent_strength = (opponent_driver.level * 0.25) + (opponent_car.level * 0.75)
+        if player_strength > opponent_strength:
+            print("High speed corner overtake successful!")
+            return "Player's car"
+        elif player_strength == opponent_strength:
+            print("High speed corner overtake failed.")
+            return "Opponent's car"
+        else:
+            print("High speed corner overtake failed.")
+            return "Opponent's car"
+
+    # Pit stop
+    def pit_stop(self, player_pit_crew):
+        pit_time = player_pit_crew.pit_stop_time()
+        print(f"Player's pit stop time: {pit_time} seconds")
+
+        return pit_time
+
+
+# Run race
+def run_race(self, player_driver, player_car, player_pit_crew):
+    # Opponent setup
+    opponent_driver = Driver()
+    opponent_car = Opponent_car()
+
+    if not self.race_start():
+        return
+
+    race_name = self.get_race_name()
+    print(f"\nRace: {race_name}")
+
+    print("Race started!")
+    print(f"Player's driver level: {player_driver.level}, Player's car level: {player_car.level}")
+
+    events = [self.straight_battle, self.low_speed_corner_battle, self.medium_speed_corner_battle,
+              self.high_speed_corner_battle, self.pit_stop] * 2  # Repeat each event twice
+
+    random.shuffle(events)  # Shuffle event order
+
+    for event in events:
+        if event == self.pit_stop:
+            pass
+        else:
+            event_outcome = event(player_driver, player_car, opponent_driver, opponent_car)
+
+            if event_outcome == "Crash":
+                break
+
+    print("Race finish!")
+
+
+def upgrade_menu(self, player_driver, player_car, player_pit_crew):
+    print("\nUpgrade Menu:")
+    print("1. Upgrade Driver")
+    print("2. Upgrade Car")
+    print("3. Upgrade Pit Crew")
+    print("4. Continue to next race")
+
+    choice = input("Enter your choice (1-4): ")
+    if choice == "1":
+        player_driver.upgrade()
+        print("Driver upgraded!")
+    elif choice == "2":
+        player_car.upgrade()
+        print("Car upgraded!")
+    elif choice == "3":
+        player_pit_crew.upgrade()
+        print("Pit Crew upgraded!")
+    elif choice == "4":
+        print("Continuing to next race...")
+    else:
+        print("Invalid choice!")
+
+
+if __name__ == "__main__":
+    game = Game()
+    num_races = 5  # Championship consists of 5 races
+    player_driver = Driver()  # Player's driver starts at level 1
+    player_car = Player_car()  # Player's car starts at level 1
+    player_pit_crew = Pit_crew(1)  # Player's pit crew starts at level 1
+
+    for race in range(num_races):
+        print(f"\nRace {race + 1}")
+        game.upgrade_menu(player_driver, player_car, player_pit_crew)
+
+
+    # Idk what this is
+    def _main_game_loop(self):
+        """The main game loop."""
+        while self.continue_playing:
+            pass
+            # ask for user input
+            # parse user input
+            # update game state
+            # check if party is all dead
+            # if part is dead, award legacy points and end instance of game
+            # if party is not dead, continue game
+        if self.continue_playing is False:
+            return True
+        elif self.continue_playing == "Save and quit":
+            return "Save and quit"
+        else:
+            return False
+
+
+
+## ./project_code/src/__init__.py
+
+
+
+## ./project_code/src/Location.py
+class Location:
+    pass
+
+
+## ./project_code/src/Character.py
+from project_code.src.Statistic import *
+
+
+class Character:
+
+    def __init__(self, name: str = None):
+        """
+        Core Stats: Everyone has these
+        - Strength: How much you can lift. How strong you are. How hard you punch, etc.
+        - Dexterity: How quick your limbs can perform intricate tasks. How adept you are at avoiding blows you anticipate. Impacts speed.
+        - Constitution: The bodies natural armor. Characters may have unique positive or negative constitutions that provide additional capabilities
+        - vitality: A measure of how lively you feel. How many Hit Points you have. An indirect measure of age.
+        - Endurance: How fast you recover from injuries. How quickly you recover from fatigue.
+        - Intelligence: How smart you are. How quickly you can connect the dots to solve problems. How fast you can think.
+        - Wisdom: How effectively you can make choices under pressure. Generally low in younger people.
+        - Knowledge: How much you know? This is a raw score for all knowledge. Characters may have specific areas of expertise with a bonus or deficit in some areas.
+        - Willpower: How quickly or effectively the character can overcome natural urges. How susceptible they are to mind control.
+        - Spirit: Catchall for ability to perform otherworldly acts. High spirit is rare. Different skills have different resource pools they might use like mana, stamina, etc. These are unaffected by spirit. Instead spirit is a measure of how hard it is to learn new otherworldly skills and/or master general skills.
+         """
+        self.name = self._generate_name() if name is None else name
+        self.strength: Strength = Strength(self)
+        # etc
+        # self.intelligence: Intelligence = Intelligence(self)
+
+    def _generate_name(self):
+        return "Bob"
+
+
+
+## ./project_code/src/main.py
+# main.py
+import sys
+from project_code.src.UserInputParser import UserInputParser
+from project_code.src.InstanceCreator import InstanceCreator
+from project_code.src.UserFactory import UserFactory
+
+def start_game():
+    parser = UserInputParser()
+    user_factory = UserFactory()
+    instance_creator = InstanceCreator(user_factory, parser)
+
+    response = parser.parse("Would you like to start a new game? (yes/no)")
+    print(f"Response: {response}")
+    user = instance_creator.get_user_info(response)
+    if user is not None:
+        game_instance = user.current_game
+        if game_instance is not None:
+            response = game_instance.start_game()
+            if response == "Save and quit":
+                user.save_game()
+                print("Game saved. Goodbye!")
+                sys.exit()
+            elif response:
+                print("Goodbye!")
+                sys.exit()
+    else:
+        print("See you next time!")
+        sys.exit()
+
+if __name__ == '__main__':
+    start_game()
+
+def _main_game_loop(self):
+    while self.continue_playing:
+        self.current_location = self.location[0]
+        self.current_event = self.current_location.getEvent() 
+
+
+def _initialize_game(self):
+    character_list = [Character() for _ in range(10)]
+    location_list = [Location() for _ in range(2)]
+
+    for character in 
+
+
+## ./project_code/src/UserInputParser.py
+class UserInputParser:
+
+    def __init__(self):
+        self.style = "console"
+
+    def parse(self, prompt) -> str:
+        response: str = input(prompt)
+        return response
+
+
+
+## ./project_code/src/InstanceCreator.py
+# InstanceCreator.py
+from project_code.src.User import User
+from project_code.src.UserFactory import UserFactory
+from project_code.src.UserInputParser import UserInputParser
+
+
+class InstanceCreator:
+
+    def __init__(self, user_factory: UserFactory, parser: UserInputParser):
+        self.user_factory = user_factory
+        self.parser = parser
+
+    def _new_user_or_login(self) -> User:
+        response = self.parser.parse("Create a new username or login to an existing account?")
+        if "login" in response:
+            return self._load_user()
+        else:
+            return self.user_factory.create_user(self.parser)
+
+    def get_user_info(self, response: str) -> User | None:
+        if "yes" in response:
+            return self._new_user_or_login()
+        else:
+            return None
+
+    def _load_user(self) -> User:
+        pass
+
+
+
+## ./project_code/src/Statistic.py
+class Race:
+    def __init__(self):
+        self.events = ['Straight battle', 'High speed corner battle', 'Medium speed corner battle',
+                       'Low speed corner battle', 'Pit stop']
+
+    def get_race_name(self):
+        race_names = ["British Grand Prix", "Italian Grand Prix", "Monaco Grand Prix", "Brazilian Grand Prix", "Belgian Grand Prix"]
+        return random.choice(race_names)
+
+    def race_start(self):
+        if random.random() < 0.9:  
+            print("Race start successful!")
+            return True
+        else:
+            print("DNF. You crashed with another driver and are out of this race.")
+            return False
+
+    def straight_battle(self, game, player_driver, player_car, player_pit_crew):
+        if random.random() < 0.025:
+            print("DNF. You crashed trying a straight line overtake.")
+            return "DNF"
+
+        opponent_driver = Driver()
+        opponent_car = OpponentCar()
+        opponent_driver.randomize_level()
+        opponent_car.randomize_level()
+
+        if player_driver.level >= 3 and player_car.level == opponent_car.level:
+            print("Straight line overtake successful!")
+            return "Player's car"
+        elif player_car.level > opponent_car.level:
+            print("Straight line overtake successful!")
+            return "Player's car"
+        elif player_car.level == opponent_car.level:
+            print("Straight line overtake failed.")
+            return "Opponent's car"
+        else:
+            print("Straight line overtake failed.")
+            return "Opponent's car"
+
+    def low_speed_corner_battle(self, game, player_driver, player_car, player_pit_crew):
+        if random.random() < 0.05:
+            print("DNF. You crashed trying a low speed corner overtake.")
+            return "DNF"
+
+        opponent_driver = Driver()
+        opponent_driver.randomize_level()
+
+        if player_driver.level > opponent_driver.level:
+            print("Low speed corner overtake successful!")
+            return "Player's car"
+        elif player_driver.level == opponent_driver.level:
+            print("Low speed corner overtake failed.")
+            return "Opponent's car"
+        else:
+            print("Low speed corner overtake failed.")
+            return "Opponent's car"
+
+
+## ./project_code/src/newcode.py
+class Race:
+    def __init__(self):
+        self.events = ['Straight battle', 'High speed corner battle', 'Medium speed corner battle',
+                       'Low speed corner battle', 'Pit stop']
+
+    def get_race_name(self):
+        race_names = ["British Grand Prix", "Italian Grand Prix", "Monaco Grand Prix", "Brazilian Grand Prix", "Belgian Grand Prix"]
+        return random.choice(race_names)
+
+    def race_start(self):
+        if random.random() < 0.9:  
+            print("Race start successful!")
+            return True
+        else:
+            print("DNF. You crashed with another driver and are out of this race.")
+            return False
+
+    def straight_battle(self, game, player_driver, player_car, player_pit_crew):
+        if random.random() < 0.025:
+            print("DNF. You crashed trying a straight line overtake.")
+            return "DNF"
+
+        opponent_driver = Driver()
+        opponent_car = OpponentCar()
+        opponent_driver.randomize_level()
+        opponent_car.randomize_level()
+
+        if player_driver.level >= 3 and player_car.level == opponent_car.level:
+            print("Straight line overtake successful!")
+            return "Player's car"
+        elif player_car.level > opponent_car.level:
+            print("Straight line overtake successful!")
+            return "Player's car"
+        elif player_car.level == opponent_car.level:
+            print("Straight line overtake failed.")
+            return "Opponent's car"
+        else:
+            print("Straight line overtake failed.")
+            return "Opponent's car"
+
+    def low_speed_corner_battle(self, game, player_driver, player_car, player_pit_crew):
+        if random.random() < 0.05:
+            print("DNF. You crashed trying a low speed corner overtake.")
+            return "DNF"
+
+        opponent_driver = Driver()
+        opponent_driver.randomize_level()
+
+        if player_driver.level > opponent_driver.level:
+            print("Low speed corner overtake successful!")
+            return "Player's car"
+        elif player_driver.level == opponent_driver.level:
+            print("Low speed corner overtake failed.")
+            return "Opponent's car"
+        else:
+            print("Low speed corner overtake failed.")
+            return "Opponent's car"
+
+
+
