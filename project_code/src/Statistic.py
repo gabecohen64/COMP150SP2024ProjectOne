@@ -1,3 +1,5 @@
+import random
+
 class Race:
     def __init__(self):
         self.events = ['Straight battle', 'High speed corner battle', 'Medium speed corner battle',
@@ -8,7 +10,7 @@ class Race:
         return random.choice(race_names)
 
     def race_start(self):
-        if random.random() < 0.9:  
+        if random.random() < 0.9:
             print("Race start successful!")
             return True
         else:
@@ -37,21 +39,108 @@ class Race:
         else:
             print("Straight line overtake failed.")
             return "Opponent's car"
+class Driver:
+    def __init__(self):
+        self.level = 0  # Assuming level is an attribute of the driver
 
-    def low_speed_corner_battle(self, game, player_driver, player_car, player_pit_crew):
-        if random.random() < 0.05:
-            print("DNF. You crashed trying a low speed corner overtake.")
-            return "DNF"
+    def randomize_level(self):
+        self.level = random.randint(1, 5)  # Random level between 1 and 5
 
-        opponent_driver = Driver()
-        opponent_driver.randomize_level()
+class OpponentCar:
+    def __init__(self):
+        self.level = 0  # Assuming level is an attribute of the car
 
-        if player_driver.level > opponent_driver.level:
-            print("Low speed corner overtake successful!")
-            return "Player's car"
-        elif player_driver.level == opponent_driver.level:
-            print("Low speed corner overtake failed.")
-            return "Opponent's car"
-        else:
-            print("Low speed corner overtake failed.")
-            return "Opponent's car"
+    def randomize_level(self):
+        self.level = random.randint(1, 5)  # Random level between 1 and 5
+
+class Strength:
+    def __init__(self, value=0):
+        self.value = value
+
+    def increase(self, amount):
+        self.value += amount
+
+    def decrease(self, amount):
+        self.value -= amount
+
+class Constitution:
+    def __init__(self, value=0):
+        self.value = value
+
+    def increase(self, amount):
+        self.value += amount
+
+    def decrease(self, amount):
+        self.value -= amount
+class Dexterity:
+    def __init__(self, value=0):
+        self.value = value
+
+    def increase(self, amount):
+        self.value += amount
+
+    def decrease(self, amount):
+        self.value -= amount
+class Vitality:
+    def __init__(self, value=0):
+        self.value = value
+
+    def increase(self, amount):
+        self.value += amount
+
+    def decrease(self, amount):
+        self.value -= amount
+class Endurance:
+    def __init__(self, value=0):
+        self.value = value
+
+    def increase(self, amount):
+        self.value += amount
+
+    def decrease(self, amount):
+        self.value -= amount
+class Intelligence:
+    def __init__(self, value=0):
+        self.value = value
+
+    def increase(self, amount):
+        self.value += amount
+
+    def decrease(self, amount):
+        self.value -= amount
+class Wisdom:
+    def __init__(self, value=0):
+        self.value = value
+
+    def increase(self, amount):
+        self.value += amount
+
+    def decrease(self, amount):
+        self.value -= amount
+class Knowledge:
+    def __init__(self, value=0):
+        self.value = value
+
+    def increase(self, amount):
+        self.value += amount
+
+    def decrease(self, amount):
+        self.value -= amount
+class Willpower:
+    def __init__(self, value=0):
+        self.value = value
+
+    def increase(self, amount):
+        self.value += amount
+
+    def decrease(self, amount):
+        self.value -= amount
+class Spirit:
+    def __init__(self, value=0):
+        self.value = value
+
+    def increase(self, amount):
+        self.value += amount
+
+    def decrease(self, amount):
+        self.value -= amount
