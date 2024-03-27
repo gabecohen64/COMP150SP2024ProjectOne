@@ -1,24 +1,20 @@
 import sys
-
 from project_code.src.Character import Character
 from project_code.src.Location import Location
 from project_code.src.UserInputParser import UserInputParser
 from project_code.src.InstanceCreator import InstanceCreator
 from project_code.src.UserFactory import UserFactory
-
 def start_game():
     class Game:
         def __init__(self):
             # Initialize game attributes here
             self.players = []
             self.round_number = 0
-
     def start_game(self):
         # Start the game logic here
         print("Starting the game!")
         # Add your game logic here
         return "Game started successfully"
-
     def add_player(self, player):
         # Add a player to the game
         self.players.append(player)
