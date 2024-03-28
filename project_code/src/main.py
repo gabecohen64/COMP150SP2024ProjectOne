@@ -45,10 +45,23 @@ def start_game():
         print("See you next time!")
         sys.exit()
 
-def _main_game_loop():
-    while True:  # Assuming this is a placeholder for a loop
-        # Your main game loop logic goes here
-        pass
+def _main_game_loop(game=None):
+        while True:
+            # Start the race
+            race_started = game.race.race_start()
+            if not race_started:
+                break
+    
+            # Handle events
+            for event in game.race.events:
+                game.handle_event(event)
+    
+            # Update game state
+            game.update_state()
+    
+            # Check if the game is over
+            if game.is_over():
+                break
 
 def _initialize_game():
     character_list = [Character() for _ in range(10)]
