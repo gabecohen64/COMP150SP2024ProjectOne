@@ -1,8 +1,8 @@
-'''game ideas: racing theme, characters are drivers, pit crew members, engineers, and team boss. these characters can receive upgrades. upgraded drivers are faster and more consistent meaning less incidents 
+"""game ideas: racing theme, characters are drivers, pit crew members, engineers, and team boss. these characters can receive upgrades. upgraded drivers are faster and more consistent meaning less incidents
  like spinning out or crashing. upgraded pit crews add more pit crew members per upgrade, meaning faster pit stops. upgraded engineers mean a faster car with upgraded aerodynamics and engine. an upgraded
 boss adds more consistency to pit stops and car upgrades. a lower level boss increases the chances of inconsistent pit stop times regardless of the number of members, and it can mean car upgrades may backfire
 and make the car slower than before. events could be the race start, pit stops, and battles on sections of track such as straights, high speed, medium speed, and low speed corners. include safety car as cutscene.
-safety car is most common pit stop time.'''
+safety car is the most common pit stop time."""
 import random
 from typing import List
 
@@ -12,8 +12,19 @@ from project_code.src.Location import Location
 
 
 class Engineers(Character):
-    pass
+    def __init__(self, name: str = None, skill_level: int = 1):
+        super().__init__(name)
+        self.skill_level = skill_level
+    def upgrade_skill(self):
+        self.skill_level += 1
+    def perform_action(self):
+        # Increase the performance of the car
+        self.upgrade_car_performance()
 
+def upgrade_car_performance(self):
+    # Increase the skill level of the engineer, which in turn increases the performance of the car
+    self.skill_level += 1
+    print(f"Car performance upgraded by engineer {self.name}. Current skill level: {self.skill_level}")
 
 class Game:
     def __init__(self):
@@ -27,10 +38,29 @@ class Game:
         self.current_event = None
         self._initialize_game()
         self.continue_playing = True
+def upgrade_menu(self, player_driver, player_car, player_pit_crew):
+    while True:
+        print("\nUpgrade Menu:")
+        print("1. Upgrade Driver")
+        print("2. Upgrade Car")
+        print("3. Upgrade Pit Crew")
+        print("4. Continue to next race")
 
-    def upgrade_menu(self, player_driver, player_car, player_pit_crew):
-        pass
-
+        choice = input("Enter your choice (1-4): ")
+        if choice == "1":
+            player_driver.upgrade()
+            print("Driver upgraded!")
+        elif choice == "2":
+            player_car.upgrade()
+            print("Car upgraded!")
+        elif choice == "3":
+            player_pit_crew.upgrade()
+            print("Pit Crew upgraded!")
+        elif choice == "4":
+            print("Continuing to next race...")
+            break
+        else:
+            print("Invalid choice!")
 
 # Initalizes all upgrades and set race number to 1 before championship starts
 class Driver:

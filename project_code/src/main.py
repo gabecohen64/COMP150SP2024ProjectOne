@@ -62,7 +62,6 @@ def _main_game_loop(game=None):
             # Check if the game is over
             if game.is_over():
                 break
-
 def _initialize_game():
     character_list = [Character() for _ in range(10)]
     location_list = [Location() for _ in range(2)]
