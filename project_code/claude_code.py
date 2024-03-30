@@ -92,7 +92,7 @@ class Game:
         self.current_location = None
         self.current_event = None
         self.continue_playing = True
-
+        self.score = 0  # Add a score attribute
     def upgrade_menu(self, player_driver, player_car, player_pit_crew):
         print("\nUpgrade Menu:")
         print("1. Upgrade Driver")
@@ -114,6 +114,19 @@ class Game:
             print("Continuing to next race...")
         else:
             print("Invalid choice!")
+    def update_score(self, outcome):
+        if outcome == "Player's car":
+            self.score += 1
+        elif outcome == "Opponent's car":
+            self.score -= 1
+
+    def check_game_over(self):
+        if self.score <= -5:
+            print("Game Over. You lost the championship.")
+            self.continue_playing = False
+        elif self.score >= 5:
+            print("Congratulations! You won the championship.")
+            self.continue_playing = False
 
 class Race:
     def __init__(self):
@@ -238,10 +251,14 @@ def run_race(game: object, player_driver: object, player_car: object, player_pit
         else:
             event_outcome = event(player_driver, player_car, opponent_driver, opponent_car)
 
-        if event_outcome == "DNF":
+        if event_outcome in ["Player's car", "Opponent's car"]:
+            game.update_score(event_outcome)
+
+        if event_outcome == "DNF" or not game.continue_playing:
             break
 
     print("Race finish!")
+    game.check_game_over()
 
 if __name__ == "__main__":
     game = Game()
@@ -254,3 +271,5 @@ if __name__ == "__main__":
         print(f"\nRace {race + 1}")
         game.upgrade_menu(player_driver, player_car, player_pit_crew)
         run_race(game, player_driver, player_car, player_pit_crew)
+        if not game.continue_playing:
+            break
