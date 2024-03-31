@@ -80,7 +80,6 @@ class Event:
             print("Pit stop occurred. Car performance and driver stamina increased.")
         else:
             print("Unknown event occurred.")
-
 class Game:
     def __init__(self):
         self.characters: List[Character] = [Driver(1), Pit_crew(1), Engineers()]
@@ -92,7 +91,17 @@ class Game:
         self.current_location = None
         self.current_event = None
         self.continue_playing = True
-        self.score = 0  # Add a score attribute
+        self.score = 0
+
+    def start_game(self):
+        print("Welcome to the game!")
+        username = input("Please enter your username: ")
+        password = input("Please enter your password: ")
+        character_name = input("Please enter your character's name: ")
+
+        # You can use the username, password, and character_name here
+        # For example, you might want to create a new Character with the given name
+        self.characters.append(Character(name=character_name))
     def upgrade_menu(self, player_driver, player_car, player_pit_crew):
         print("\nUpgrade Menu:")
         print("1. Upgrade Driver")
@@ -262,7 +271,8 @@ def run_race(game: object, player_driver: object, player_car: object, player_pit
 
 if __name__ == "__main__":
     game = Game()
-    num_races = 5
+    game.start_game()
+    num_races = 4
     player_driver = Driver(1)
     player_car = Player_car()
     player_pit_crew = Pit_crew(1)
