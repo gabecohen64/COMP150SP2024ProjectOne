@@ -10,7 +10,6 @@ class Character:
     def _generate_name(self):
         return "Bob"
 
-
 class Driver(Character):
     def __init__(self, level):
         super().__init__()
