@@ -1,7 +1,6 @@
 import random
 from typing import List
 
-
 class Character:
     def __init__(self, name: str = None):
         self.level = None
@@ -23,7 +22,6 @@ class Driver(Character):
     def randomize_level(self):
         self.level = random.randint(1, 4)
 
-
 class Pit_crew(Character):
     def __init__(self, level):
         super().__init__()
@@ -43,11 +41,9 @@ class Pit_crew(Character):
         elif self.level == 4:
             return round(random.uniform(2, 3.5), 1)
 
-
 class Engineers(Character):
     def __init__(self):
         super().__init__()
-
 
 class Player_car:
     def __init__(self):
@@ -58,7 +54,6 @@ class Player_car:
         if self.level < 4:
             self.level += 1
 
-
 class Opponent_car:
     def __init__(self):
         self.level = 1
@@ -67,11 +62,9 @@ class Opponent_car:
     def randomize_level(self):
         self.level = random.randint(1, 4)
 
-
 class Location:
     def __init__(self, name):
         self.name = name
-
 
 class Event:
     def __init__(self, name):
@@ -100,16 +93,14 @@ class Event:
         else:
             print("Unknown event occurred.")
 
-
 class Game:
     def __init__(self):
-        self.characters: List[Character] = [Driver(1), Pit_crew(1), Engineers()]
+        self.characters: List[Character] = [Driver(2), Pit_crew(2), Engineers()]  # Increased initial levels
         self.player_car = Player_car()  # Moved Player_car instance to Game
         self.locations: List[Location] = [Location("British Grand Prix"), Location("Italian Grand Prix")]
         self.events: List[Event] = [Event("Race Start"), Event("Straight battle"), Event("High-speed corner battle"),
                                     Event("Medium-speed corner battle"),
-                                    Event("Low-speed corner battle"), Event("Pit stop"), Event("Safety car"),
-                                    Event("Crash"), Event("Race finish")]
+                                    Event("Low-speed corner battle"), Event("Pit stop")]
         self.party: List[Character] = [Character("Team Owner")]
         self.current_location = None
         self.current_event = None
@@ -150,24 +141,22 @@ class Game:
 
     def update_score(self, outcome):
         if outcome == "Player's car":
-            self.score += 1
+            self.score += 2  # Increase the score for player's win
         elif outcome == "Opponent's car":
-            self.score -= 1
+            self.score -= 1  # Reduce the penalty for opponent's win
 
     def check_game_over(self):
-        if self.score <= -5:
+        if self.score <= -10:  # Adjust the game over threshold
             print("Game Over. You lost the championship.")
             self.continue_playing = False
-        elif self.score >= 5:
+        elif self.score >= 10:
             print("Congratulations! You won the championship.")
             self.continue_playing = False
-
 
 def get_race_name():
     race_names = ["British Grand Prix", "Italian Grand Prix", "Monaco Grand Prix", "Brazilian Grand Prix",
                   "Belgian Grand Prix"]
     return random.choice(race_names)
-
 
 class Race:
     def __init__(self, game: Game):
@@ -193,24 +182,15 @@ class Race:
         opponent_car.randomize_level()
 
         if self.player_driver.level >= 3:
-            if self.game.player_car.level == opponent_car.level:
+            if self.game.player_car.level >= opponent_car.level:
                 print("Straight line overtake successful!")
                 return "Player's car"
-            elif self.game.player_car.level > opponent_car.level:
-                print("Straight line overtake successful!")
-                return "Player's car"
-            elif self.game.player_car.level == opponent_car.level:
-                print("Straight line overtake failed.")
-                return "Opponent's car"
             else:
                 print("Straight line overtake failed.")
                 return "Opponent's car"
         elif self.game.player_car.level > opponent_car.level:
             print("Straight line overtake successful!")
             return "Player's car"
-        elif self.game.player_car.level == opponent_car.level:
-            print("Straight line overtake failed.")
-            return "Opponent's car"
         else:
             print("Straight line overtake failed.")
             return "Opponent's car"
@@ -274,7 +254,6 @@ class Race:
 
         return pit_time
 
-
 def run_race(game: Game):
     race = Race(game)
     opponent_driver = Driver(1)
@@ -310,7 +289,6 @@ def run_race(game: Game):
 
     print("Race finish!")
     game.check_game_over()
-
 
 if __name__ == "__main__":
     game = Game()
