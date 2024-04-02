@@ -1,18 +1,11 @@
 # COMP150SP2024ProjectOne
-## 
-This is the repository for the first project of the Spring 2024 semester of COMP150. The project is to create a command line version of a simplified Dungeons and Dragons game. The game will be text based and will be played in the terminal. The game will be written in Python and will be due on March 26th, 2024. The game will be written by the students in the class and will be a group project.
 
 ## Team Members
-You will be assigned an initial team member based on class rank and attendance.
+Abdullah I Khan and Gabe Cohen
 
-## Project Rubric
-1. You must make at least 1 commit per weekday for the remainder of the semester. If you have no time to work on the project, you must make a commit that says "I have no time to work on the project today." If you do not make a commit, you will lose 5 points per day.
-2. You must have a working version of the game by the due date. If you do not have a working version of the game, you will get a 0.
-3. You must have a README.md file that explains how to play the game. If you do not have a README.md file, you will lose 10% of the points.
-4. You must include all of the concepts, functions, and classes as described in the project description.
 
 ## Project Description
-You will be creating a simplified version of Dungeons and Dragons. The game will be text based and will be played in the terminal. The core game mechanics have already been configured for you. Feel free to augment these as you implement the code.
+
 
 ### The Party
 Each instance of the game will contain a party. A party has no maximum size, but does have a minimum size of 1. If the party is eliminated the game instance ends. During an instance the user will make choices based on the prompts. They may be able to gain or lose party members as they progress.
