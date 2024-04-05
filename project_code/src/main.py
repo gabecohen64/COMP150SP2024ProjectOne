@@ -116,26 +116,32 @@ class Game:
         self.characters.append(Character(name=character_name))
 
     def upgrade_menu(self, player_driver, player_pit_crew):
-        print("\nUpgrade Menu:")
-        print("1. Upgrade Driver")
-        print("2. Upgrade Car")
-        print("3. Upgrade Pit Crew")
-        print("4. Continue to next race")
+        while True:  # Start of the loop
+            print("\nUpgrade Menu:")
+            print("1. Upgrade Driver")
+            print("2. Upgrade Car")
+            print("3. Upgrade Pit Crew")
+            print("4. Continue to next race")
 
-        choice = input("Enter your choice (1-4): ")
-        if choice == "1":
-            player_driver.upgrade()
-            print("Driver upgraded!")
-        elif choice == "2":
-            self.player_car.upgrade()
-            print("Car upgraded!")
-        elif choice == "3":
-            player_pit_crew.upgrade()
-            print("Pit Crew upgraded!")
-        elif choice == "4":
-            print("Continuing to next race...")
-        else:
-            print("Invalid choice!")
+            choice = input("Enter your choice (1-4): ")
+            if choice == "1":
+                player_driver.upgrade()
+                print("Driver upgraded!")
+                break  # Exit the loop after valid input
+            elif choice == "2":
+                self.player_car.upgrade()
+                print("Car upgraded!")
+                break  # Exit the loop after valid input
+            elif choice == "3":
+                player_pit_crew.upgrade()
+                print("Pit Crew upgraded!")
+                break  # Exit the loop after valid input
+            elif choice == "4":
+                print("Continuing to next race...")
+                break  # Exit the loop after valid input
+            else:
+                print("Invalid choice! Please enter a number from 1 to 4.")
+
 
     def update_score(self, outcome):
         if outcome == "Player's car":
