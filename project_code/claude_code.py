@@ -122,8 +122,9 @@ class Game:
             print("2. Upgrade Car")
             print("3. Upgrade Pit Crew")
             print("4. Continue to next race")
+            print("5. Exit Game")
 
-            choice = input("Enter your choice (1-4): ")
+            choice = input("Enter your choice (1-5): ")
             if choice == "1":
                 player_driver.upgrade()
                 print("Driver upgraded!")
@@ -139,8 +140,12 @@ class Game:
             elif choice == "4":
                 print("Continuing to next race...")
                 break  # Exit the loop after valid input
+            elif choice == "5":
+                print("Thank you for playing!")
+                self.continue_playing = False
+                break  # Exit the loop after valid input
             else:
-                print("Invalid choice! Please enter a number from 1 to 4.")
+                print("Invalid choice! Please enter a number from 1 to 5.")
 
 
     def update_score(self, outcome):
@@ -300,6 +305,8 @@ if __name__ == "__main__":
     for race in range(num_races):
         print(f"\nRace {race + 1}")
         game.upgrade_menu(game.characters[0], game.characters[1])
+        if not game.continue_playing:
+            break
         run_race(game)
         if not game.continue_playing:
             break
